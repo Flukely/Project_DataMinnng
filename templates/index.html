@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ทำนาย GPA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2e4a7c;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .year {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 60px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: #4bd369;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #53c96d;
+        }
+
+        #result, #mse, #r2 {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #2e4a7c;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h1>ทำนาย GPA</h1>
+        <form id="gpaForm">
+            <div class="container">
+                <!-- ปี 1 -->
+                <div class="year">
+                    <h2>ปี 1</h2>
+                    {% for i in range(12) %}
+                    <label for="grade{{ i+1 }}">{{ features[i] }}</label>
+                    <select name="grade{{ i+1 }}" required>
+                        <option value="A">A</option>
+                        <option value="B+">B+</option>
+                        <option value="B">B</option>
+                        <option value="C+">C+</option>
+                        <option value="C">C</option>
+                        <option value="D+">D+</option>
+                        <option value="D">D</option>
+                        <option value="F">F</option>
+                    </select><br>
+                    {% endfor %}
+                </div>
+
+                <!-- ปี 2 -->
+                <div class="year">
+                    <h2>ปี 2</h2>
+                    {% for i in range(12, 20) %}
+                    <label for="grade{{ i+1 }}">{{ features[i] }}</label>
+                    <select name="grade{{ i+1 }}" required>
+                        <option value="A">A</option>
+                        <option value="B+">B+</option>
+                        <option value="B">B</option>
+                        <option value="C+">C+</option>
+                        <option value="C">C</option>
+                        <option value="D+">D+</option>
+                        <option value="D">D</option>
+                        <option value="F">F</option>
+                    </select><br>
+                    {% endfor %}
+                </div>
+
+                <!-- ปี 3 -->
+                <div class="year">
+                    <h2>ปี 3</h2>
+                    {% for i in range(20, 30) %}
+                    <label for="grade{{ i+1 }}">{{ features[i] }}</label>
+                    <select name="grade{{ i+1 }}" required>
+                        <option value="A">A</option>
+                        <option value="B+">B+</option>
+                        <option value="B">B</option>
+                        <option value="C+">C+</option>
+                        <option value="C">C</option>
+                        <option value="D+">D+</option>
+                        <option value="D">D</option>
+                        <option value="F">F</option>
+                    </select><br>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <input type="submit" value="ทำนาย GPA">
+        </form>
+        <h2 id="result"></h2>
+        <h3 id="mse"></h3>
+        <h3 id="r2"></h3>
+    </div>
+
+    <script>
+        document.getElementById('gpaForm').addEventListener('submit', function (event) {
+            event.preventDefault();  // ป้องกันการส่งฟอร์ม
+
+            const formData = new FormData(this);
+
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = 'ผลการทำนาย GPA: ' + data.predicted_gpa.toFixed(2);
+                document.getElementById('mse').innerText = 'Mean Squared Error (MSE): ' + data.mse.toFixed(4);
+                document.getElementById('r2').innerText = 'R-Squared (R²): ' + data.r2.toFixed(4);
+            });
+        });
+    </script>
+</body>
+
+</html>
