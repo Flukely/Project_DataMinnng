@@ -59,7 +59,9 @@
             background-color: #53c96d;
         }
 
-        #result, #mse, #r2 {
+        #result,
+        #mse,
+        #r2 {
             margin-top: 20px;
             font-size: 20px;
             color: #2e4a7c;
@@ -131,7 +133,9 @@
         </form>
         <h2 id="result"></h2>
         <h3 id="mse"></h3>
+        <h3 id="rmse"></h3>
         <h3 id="r2"></h3>
+        <h3 id="coefficient"></h3>
     </div>
 
     <script>
@@ -144,12 +148,14 @@
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('result').innerText = 'ผลการทำนาย GPA: ' + data.predicted_gpa.toFixed(2);
-                document.getElementById('mse').innerText = 'Mean Squared Error (MSE): ' + data.mse.toFixed(4);
-                document.getElementById('r2').innerText = 'R-Squared (R²): ' + data.r2.toFixed(4);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('result').innerText = 'ผลการทำนาย GPA: ' + data.predicted_gpa.toFixed(2);
+                    document.getElementById('mse').innerText = 'Mean Squared Error (MSE): ' + data.mse.toFixed(4);
+                    document.getElementById('rmse').innerText = 'Root Mean Squared Error (RMSE): ' + data.rmse.toFixed(4);
+                    document.getElementById('r2').innerText = 'R-Squared (R²): ' + data.r2.toFixed(4);
+                    document.getElementById('coefficient').innerText = 'Correlation Coefficient: ' + data.correlation.toFixed(4);
+                });
         });
     </script>
 </body>
