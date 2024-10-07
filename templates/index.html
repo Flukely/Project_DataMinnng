@@ -7,71 +7,107 @@
     <title>ทำนาย GPA</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
+            font-family: 'Kanit', sans-serif;
+            background-color: #e7efcf;
             margin: 0;
             padding: 20px;
             text-align: center;
+            color: #455238;
         }
 
         h1 {
-            color: #2e4a7c;
+            color: #455238;
+            font-size: 64px;
+        }
+
+        h2 {
+            color: #455238;
         }
 
         .container {
             display: flex;
             justify-content: space-around;
+            flex-wrap: wrap;
             margin-bottom: 20px;
         }
 
         .year {
             background-color: #ffffff;
             border-radius: 10px;
-            padding: 60px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 0px 70px 30px 70px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             width: 300px;
+            margin: 10px;
         }
 
         label {
             display: block;
             margin: 10px 0 5px;
+            font-size: 16px;
         }
 
         select {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
+            padding: 10px;
+            border: 2px solid #455238;
             border-radius: 5px;
+            font-size: 16px;
+            color: #455238;
         }
 
         input[type="submit"] {
-            background-color: #4bd369;
+            background-color: #27ae60;
             color: white;
             border: none;
-            border-radius: 5px;
-            padding: 10px 15px;
+            border-radius: 30px;
+            padding: 15px 30px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 18px;
             margin-top: 20px;
+            transition: background-color 0.3s;
         }
 
         input[type="submit"]:hover {
-            background-color: #53c96d;
+            background-color: #2ecc71;
         }
 
-        #result,
-        #mse,
-        #r2 {
-            margin-top: 20px;
-            font-size: 20px;
-            color: #2e4a7c;
+        #result {
+            margin-top: 30px;
+            font-size: 50px;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .year {
+                width: 90%;
+                margin-bottom: 20px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            input[type="submit"] {
+                font-size: 16px;
+            }
+
+            #result {
+                font-size: 20px;
+            }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <div>
-        <h1>ทำนาย GPA</h1>
+        <h1>Predict GPA</h1>
         <form id="gpaForm">
             <div class="container">
                 <!-- ปี 1 -->
@@ -84,10 +120,9 @@
                         <option value="B+">B+</option>
                         <option value="B">B</option>
                         <option value="C+">C+</option>
-                        <option value="C">C</option>
+                        <option value="C" selected>C</option>
                         <option value="D+">D+</option>
                         <option value="D">D</option>
-                        <option value="F">F</option>
                     </select><br>
                     {% endfor %}
                 </div>
@@ -102,10 +137,9 @@
                         <option value="B+">B+</option>
                         <option value="B">B</option>
                         <option value="C+">C+</option>
-                        <option value="C">C</option>
+                        <option value="C" selected>C</option>
                         <option value="D+">D+</option>
                         <option value="D">D</option>
-                        <option value="F">F</option>
                     </select><br>
                     {% endfor %}
                 </div>
@@ -120,10 +154,9 @@
                         <option value="B+">B+</option>
                         <option value="B">B</option>
                         <option value="C+">C+</option>
-                        <option value="C">C</option>
+                        <option value="C" selected>C</option>
                         <option value="D+">D+</option>
                         <option value="D">D</option>
-                        <option value="F">F</option>
                     </select><br>
                     {% endfor %}
                 </div>
@@ -132,10 +165,6 @@
             <input type="submit" value="ทำนาย GPA">
         </form>
         <h2 id="result"></h2>
-        <h3 id="mse"></h3>
-        <h3 id="rmse"></h3>
-        <h3 id="r2"></h3>
-        <h3 id="coefficient"></h3>
     </div>
 
     <script>
@@ -150,11 +179,7 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById('result').innerText = 'ผลการทำนาย GPA: ' + data.predicted_gpa.toFixed(2);
-                    document.getElementById('mse').innerText = 'Mean Squared Error (MSE): ' + data.mse.toFixed(4);
-                    document.getElementById('rmse').innerText = 'Root Mean Squared Error (RMSE): ' + data.rmse.toFixed(4);
-                    document.getElementById('r2').innerText = 'R-Squared (R²): ' + data.r2.toFixed(4);
-                    document.getElementById('coefficient').innerText = 'Correlation Coefficient: ' + data.correlation.toFixed(4);
+                    document.getElementById('result').innerText = 'ผลการทำนาย GPA ของคุณคือ : ' + data.predicted_gpa.toFixed(2);
                 });
         });
     </script>
