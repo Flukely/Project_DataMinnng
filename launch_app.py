@@ -4,6 +4,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.metrics import mean_absolute_error
 
 # สร้างแอปพลิเคชัน Flask
 app = Flask(__name__)
@@ -50,12 +51,14 @@ model.fit(X_train, y_train)
 y_pred = model.predict(X_test)
 
 # ประเมินผลโมเดล
+mae = mean_absolute_error(y_test, y_pred)# คำนวณค่า MAE
 mse = mean_squared_error(y_test, y_pred)  # คำนวณ Mean Squared Error
 r2 = r2_score(y_test, y_pred)  # คำนวณ R-Squared
 rmse = np.sqrt(mse) # คำนวณ RMSE
 correlation = np.corrcoef(y_test, y_pred)[0, 1] # คำนวณค่าสหสัมพันธ์
 
 # แสดงผลลัพธ์
+print(f'Mean Absolute Error (MAE): {mae}')
 print(f'Mean Squared Error (MSE): {mse}')
 print(f'R-Squared: {r2}')
 print("RMSE:", rmse)
